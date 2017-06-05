@@ -46,7 +46,6 @@ public class CupToOgnTask {
                     break;
 
                 case waypoint:
-                    System.out.println("Waypoint line " + lineNumber + " : " + line);
                     String[] items = line.split(",");
                     Waypoint wp = Waypoint.createWaypoint(items);
                     if (wp == null) {
@@ -61,7 +60,6 @@ public class CupToOgnTask {
                     break;
 
                 case task:
-                    System.out.println("Task line " + lineNumber + " : " + line);
                     if (line.startsWith("Options") | line.startsWith("ObsZone")) {
                         // todo - implement Options and ObsZone
                         break;
@@ -69,12 +67,10 @@ public class CupToOgnTask {
                     String[] items2 = line.split(",");
                     lastTask = Task.createTask(waipoints, items2);
                     tasks.add(lastTask);
-                    System.out.println(tasks);
                     break;
             }
             lineNumber++;
         }
-        System.out.println(tasks);
 
         // to json
         /*
