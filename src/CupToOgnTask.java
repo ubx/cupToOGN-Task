@@ -92,7 +92,10 @@ public class CupToOgnTask {
          */
 
         for (Task task : tasks) {
-            System.out.println(task.getName());
+            String taskName = task.getName();
+            if (taskName.length() == 0) {
+                taskName = "Unknown";
+            }
             List<WaypointT> waypoints = task.getWaypoints();
             JSONArray legs = new JSONArray();
 
@@ -106,7 +109,7 @@ public class CupToOgnTask {
                     .put("tasks", (new JSONArray())
                             .put(new JSONObject()
                                     .put("legs", legs)
-                                    .put("name", "xxxxx")
+                                    .put("name", taskName)
                                     .put("color", "CC3333")));
 
             System.out.println(obj);
