@@ -103,7 +103,7 @@ public class CupToOgnTask {
             }
 
             JSONObject obj = (new JSONObject())
-                    .put("task", (new JSONArray())
+                    .put("tasks", (new JSONArray())
                             .put(new JSONObject()
                                     .put("legs", legs)
                                     .put("name", "xxxxx")
