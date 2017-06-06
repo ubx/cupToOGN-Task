@@ -22,6 +22,7 @@ public class CupToOgnTask {
 
 
     private enum Mode {waypointheader, waypoint, taskheader, task}
+
     private static String cupfile, ognfile;
 
     public static void main(String args[]) throws IOException {
@@ -62,7 +63,7 @@ public class CupToOgnTask {
                     String[] items = line.split(",");
                     Waypoint wp = Waypoint.createWaypoint(items);
                     if (wp == null) {
-                        System.out.println("line skiped" + lineNumber + " : " + line);
+                        System.out.println("line skiped " + lineNumber + " : " + line);
                         break;
                     }
                     waipoints.put(wp.getName(), wp);
@@ -73,8 +74,13 @@ public class CupToOgnTask {
                     break;
 
                 case task:
-                    if (line.startsWith("Options") | line.startsWith("ObsZone")) {
-                        // todo - implement Options and ObsZone
+                    if (line.startsWith("Options")) {
+                        // todo - implement Options
+                        break;
+                    }
+                    if (line.startsWith("ObsZone")) {
+                        // todo - implement ObsZone
+                        ObsZone obsZone = ObsZone.createObsZone(line.split(","));
                         break;
                     }
                     String[] items2 = line.split(",");
@@ -93,11 +99,9 @@ public class CupToOgnTask {
             }
             List<WaypointT> waypoints = task.getWaypoints();
             JSONArray legs = new JSONArray();
-
-            for (Waypoint waypoint : waypoints) {
-                JSONArray leg = new JSONArray();
-                leg.put(dfLat.format(waypoint.getLat())).put(dfLon.format(waypoint.getLon()));
-                legs.put(leg);
+            for (WaypointT waypoint : waypoints) {
+                legs.put((new JSONArray()).put(dfLat.format(waypoint.getLat())).put(dfLon.format(waypoint.getLon())));
+                legs.put((new JSONArray()).put(500));
             }
 
             JSONObject obj = (new JSONObject())

@@ -9,8 +9,11 @@ public class WaypointT extends Waypoint {
         super(waypoint.getName(), waypoint.getLat(), waypoint.getLon());
     }
 
+    public ObsZone getObsZone() {
+        return obsZone;
+    }
 
-
-
-
+    public void setObsZone(ObsZone obsZone) {
+        this.obsZone = obsZone;
+    }
 }
