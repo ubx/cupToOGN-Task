@@ -1,2 +1,2 @@
 # cupToOGN-Task
-Convert Tasks from CUP file format description into OGN task file format
+Convert Tasks from CUP file format into OGN task file format
