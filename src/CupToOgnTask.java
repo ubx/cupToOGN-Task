@@ -1,3 +1,4 @@
+import org.apache.commons.cli.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -8,6 +9,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
+
+import static java.lang.System.exit;
 
 
 /**
@@ -20,12 +23,26 @@ public class CupToOgnTask {
 
 
     private enum Mode {waypointheader, waypoint, taskheader, task}
+    private static String cupfile,ognfile;
 
 
     public static void main(String args[]) throws FileNotFoundException {
 
-        //Creating Scanner instnace to read File in Java
-        Scanner scanner = new Scanner(new File("testdata/test.cup"));
+        CommandLineParser parser = new DefaultParser();
+        Options options = new Options();
+        options.addOption("cup", true, "the cup file to convert");
+        options.addOption("ogn", true, "the ogn file to create");
+        HelpFormatter formatter = new HelpFormatter();
+        try {
+            CommandLine cmd = parser.parse( options, args);
+            cupfile  = cmd.getOptionValue("cup");
+            ognfile  = cmd.getOptionValue("ogn");
+        } catch (ParseException e) {
+            formatter.printHelp( "cupToOgnTask", options );
+            exit(1);
+        }
+
+        Scanner scanner = new Scanner(new File(cupfile));
 
         Mode mode = Mode.waypointheader;
 
@@ -73,24 +90,6 @@ public class CupToOgnTask {
         }
 
         // to json
-        /*
-        {"tasks": [
-	        {"name": "Mixed-18m",
-	         "color": "CC3333",
-	         "legs": [
-			          [46.807, 6.630],
-			          [46.563, 6.559],[500],
-			          [46.953, 7.262],[500],
-			          [46.537, 6.333],[500],
-			          [46.976, 6.810],[500],
-			          [46.728, 6.569],[500],
-			          [46.758, 6.609],[500]
-		             ]
-	        }
-                  ]
-         }
-         */
-
         for (Task task : tasks) {
             String taskName = task.getName();
             if (taskName.length() == 0) {
@@ -112,7 +111,11 @@ public class CupToOgnTask {
                                     .put("name", taskName)
                                     .put("color", "CC3333")));
 
-            System.out.println(obj);
+            if (ognfile==null) {
+                System.out.println(obj);
+            } else {
+                // todo - write to ogn file
+            }
         }
 
     }
