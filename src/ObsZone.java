@@ -5,7 +5,6 @@ public class ObsZone {
 
     // ObsZone=0,Style=2,R1=10000m,A1=180,Reduce=1
 
-    private int num;
     private int style;
     private int r1;
 
@@ -13,16 +12,23 @@ public class ObsZone {
         if (items.length < 5) {
             return null;
         }
-        int num = Integer.getInteger(items[0].split("=")[1]);
-        int style = Integer.getInteger(items[1].split("=")[1]);
+        String x = items[1].split("=")[1];
+        int style = Integer.decode(x);
         String r1Str = items[2].split("=")[1];
-        int r1 = Integer.getInteger(r1Str.substring(0, r1Str.length() - 1));
-        return new ObsZone(num, style, r1);
+        int r1 = Integer.decode(r1Str.substring(0, r1Str.length() - 1));
+        return new ObsZone(style, r1);
     }
 
-    public ObsZone(int num, int style, int r1) {
-        this.num = num;
+    public ObsZone(int style, int r1) {
         this.style = style;
         this.r1 = r1;
+    }
+
+    public int getStyle() {
+        return style;
+    }
+
+    public int getR1() {
+        return r1;
     }
 }

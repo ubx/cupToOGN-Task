@@ -48,8 +48,8 @@ public class CupToOgnTask {
 
         //Reading each line of file using Scanner class
         int lineNumber = 1;
+        Task lastTask = null;
         while (scanner.hasNextLine()) {
-            Task lastTask;
             String line = scanner.nextLine();
             if (line.contains("-----Related Tasks-----")) {
                 mode = Mode.taskheader;
@@ -75,12 +75,14 @@ public class CupToOgnTask {
 
                 case task:
                     if (line.startsWith("Options")) {
-                        // todo - implement Options
+                        // todo - implement Options ?
                         break;
                     }
                     if (line.startsWith("ObsZone")) {
-                        // todo - implement ObsZone
-                        ObsZone obsZone = ObsZone.createObsZone(line.split(","));
+                        String[] obsItems = line.split(",");
+                        ObsZone obsZone = ObsZone.createObsZone(obsItems);
+                        int num = Integer.decode(obsItems[0].split("=")[1]);
+                        lastTask.addObsZone(num, obsZone);
                         break;
                     }
                     String[] items2 = line.split(",");
@@ -97,11 +99,15 @@ public class CupToOgnTask {
             if (taskName.length() == 0) {
                 taskName = "Unknown";
             }
-            List<WaypointT> waypoints = task.getWaypoints();
+            List<WaypointT> wps = task.getWaypoints();
             JSONArray legs = new JSONArray();
-            for (WaypointT waypoint : waypoints) {
+            int i = 0;
+            for (WaypointT waypoint : wps) {
                 legs.put((new JSONArray()).put(dfLat.format(waypoint.getLat())).put(dfLon.format(waypoint.getLon())));
-                legs.put((new JSONArray()).put(500));
+                if (i > 0 & i < wps.size() - 1) {
+                    legs.put((new JSONArray()).put(waypoint.getObsZone() == null ? 500 : waypoint.getObsZone().getR1()));
+                }
+                i++;
             }
 
             JSONObject obj = (new JSONObject())
