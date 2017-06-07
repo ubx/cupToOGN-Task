@@ -29,9 +29,10 @@ public class CupToOgnTask {
 
         CommandLineParser parser = new DefaultParser();
         Options options = new Options();
-        options.addOption("cup", true, "the cup-file to read");
-        options.addOption("ogn", true, "the ogn-file to write");
+        options.addRequiredOption("cup", "seeyou .cup input file",true, "the cup-file to read");
+        options.addOption("ogn", true, "the ogn-file to write, if not specified: sysout");
         HelpFormatter formatter = new HelpFormatter();
+        formatter.setWidth(200);
         try {
             CommandLine cmd = parser.parse(options, args);
             cupfile = cmd.getOptionValue("cup");
@@ -94,6 +95,7 @@ public class CupToOgnTask {
         }
 
         // to json
+        JSONObject jsonObj = new JSONObject();
         for (Task task : tasks) {
             String taskName = task.getName();
             if (taskName.length() == 0) {
@@ -109,22 +111,23 @@ public class CupToOgnTask {
                 }
                 i++;
             }
-
-            JSONObject obj = (new JSONObject())
-                    .put("tasks", (new JSONArray())
-                            .put(new JSONObject()
-                                    .put("legs", legs)
-                                    .put("name", taskName)
-                                    .put("color", "CC3333")));
-
-            if (ognfile == null) {
-                System.out.println(obj);
-            } else {
-                FileWriter file = new FileWriter(ognfile);
-                obj.write(file);
-                file.close();
-            }
+            JSONArray jsonArr = new JSONArray()
+                    .put(new JSONObject()
+                            .put("legs", legs)
+                            .put("name", taskName)
+                            .put("color", "CC3333"));
+            jsonObj.append("tasks", jsonArr);
         }
+
+        if (ognfile == null) {
+            System.out.println(jsonObj.toString(2));
+        } else {
+            FileWriter file = new FileWriter(ognfile);
+            file.write(jsonObj.toString(2));
+            //jsonObj.write(file);
+            file.close();
+        }
+
 
     }
 }
