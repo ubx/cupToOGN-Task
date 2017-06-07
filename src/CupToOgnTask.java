@@ -78,14 +78,14 @@ public class CupToOgnTask {
                         // todo - implement Options ?
                         break;
                     }
-                    if (line.startsWith("ObsZone")) {
+                    if (line.startsWith("ObsZone") && lastTask != null) {
                         String[] obsItems = line.split(",");
                         ObsZone obsZone = ObsZone.createObsZone(obsItems);
                         lastTask.addObsZone(Integer.decode(obsItems[0].split("=")[1]), obsZone);
                         break;
                     }
                     lastTask = Task.createTask(waipoints, line.split(","));
-                    tasks.add(lastTask);
+                    if (lastTask != null) tasks.add(lastTask);
                     break;
             }
             lineNumber++;
@@ -95,9 +95,6 @@ public class CupToOgnTask {
         JSONObject jsonObj = new JSONObject();
         for (Task task : tasks) {
             String taskName = task.getName();
-            if (taskName.length() == 0) {
-                taskName = "Unknown";
-            }
             List<WaypointWithObsZone> taskWaypoints = task.getWaypoints();
             JSONArray legs = new JSONArray();
             int wpNum = 0;
