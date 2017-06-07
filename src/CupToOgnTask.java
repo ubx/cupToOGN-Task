@@ -20,7 +20,6 @@ public class CupToOgnTask {
     private static DecimalFormat dfLat = new DecimalFormat("##.00000");
     private static DecimalFormat dfLon = new DecimalFormat("###.00000");
 
-
     private enum Mode {waypointheader, waypoint, taskheader, task}
 
     private static String cupfile, ognfile;
@@ -82,12 +81,10 @@ public class CupToOgnTask {
                     if (line.startsWith("ObsZone")) {
                         String[] obsItems = line.split(",");
                         ObsZone obsZone = ObsZone.createObsZone(obsItems);
-                        int num = Integer.decode(obsItems[0].split("=")[1]);
-                        lastTask.addObsZone(num, obsZone);
+                        lastTask.addObsZone(Integer.decode(obsItems[0].split("=")[1]), obsZone);
                         break;
                     }
-                    String[] items2 = line.split(",");
-                    lastTask = Task.createTask(waipoints, items2);
+                    lastTask = Task.createTask(waipoints, line.split(","));
                     tasks.add(lastTask);
                     break;
             }
@@ -101,15 +98,15 @@ public class CupToOgnTask {
             if (taskName.length() == 0) {
                 taskName = "Unknown";
             }
-            List<WaypointT> wps = task.getWaypoints();
+            List<WaypointWithObsZone> taskWaypoints = task.getWaypoints();
             JSONArray legs = new JSONArray();
-            int i = 0;
-            for (WaypointT waypoint : wps) {
-                legs.put((new JSONArray()).put(dfLat.format(waypoint.getLat())).put(dfLon.format(waypoint.getLon())));
-                if (i > 0 & i < wps.size() - 1) {
-                    legs.put((new JSONArray()).put(waypoint.getObsZone() == null ? 500 : waypoint.getObsZone().getR1()));
+            int wpNum = 0;
+            for (WaypointWithObsZone taskWaypoint : taskWaypoints) {
+                legs.put((new JSONArray()).put(dfLat.format(taskWaypoint.getLat())).put(dfLon.format(taskWaypoint.getLon())));
+                if (wpNum > 0 & wpNum < taskWaypoints.size() - 1) {
+                    legs.put((new JSONArray()).put(taskWaypoint.getObsZone() == null ? 500 : taskWaypoint.getObsZone().getR1()));
                 }
-                i++;
+                wpNum++;
             }
             JSONObject jsonObj2 = new JSONObject()
                             .put("legs", legs)

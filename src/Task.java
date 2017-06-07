@@ -8,12 +8,12 @@ import java.util.List;
 public class Task {
 
     private String name;
-    public List<WaypointT> waypoints = new ArrayList<WaypointT>();
+    public List<WaypointWithObsZone> waypoints = new ArrayList<WaypointWithObsZone>();
 
     static Task createTask(HashMap<String,Waypoint> waypoints, String... items) {
         Task task = new Task(items[0]);
         for (int i=1;i<items.length; i++){
-            task.waypoints.add(new WaypointT(waypoints.get(items[i])));
+            task.waypoints.add(new WaypointWithObsZone(waypoints.get(items[i])));
         }
         return task;
     }
@@ -26,7 +26,7 @@ public class Task {
         return name;
     }
 
-    public List<WaypointT> getWaypoints() {
+    public List<WaypointWithObsZone> getWaypoints() {
         return waypoints;
     }
 
