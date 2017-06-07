@@ -111,20 +111,19 @@ public class CupToOgnTask {
                 }
                 i++;
             }
-            JSONArray jsonArr = new JSONArray()
-                    .put(new JSONObject()
+            JSONObject jsonObj2 = new JSONObject()
                             .put("legs", legs)
                             .put("name", taskName)
-                            .put("color", "CC3333"));
-            jsonObj.append("tasks", jsonArr);
+                            .put("color", "CC3333");
+            jsonObj.append("tasks", jsonObj2);
         }
 
         if (ognfile == null) {
             System.out.println(jsonObj.toString(2));
         } else {
             FileWriter file = new FileWriter(ognfile);
-            file.write(jsonObj.toString(2));
-            //jsonObj.write(file);
+            //file.write(jsonObj.toString(2));
+            jsonObj.write(file);
             file.close();
         }
 
