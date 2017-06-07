@@ -1,11 +1,11 @@
 /**
  * Created by andreas on 05.06.17.
  */
-public class WaypointT extends Waypoint {
+public class WaypointWithObsZone extends Waypoint {
 
     private ObsZone obsZone;
 
-    public WaypointT(Waypoint waypoint) {
+    public WaypointWithObsZone(Waypoint waypoint) {
         super(waypoint.getName(), waypoint.getLat(), waypoint.getLon());
     }
 

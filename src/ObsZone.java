@@ -12,8 +12,7 @@ public class ObsZone {
         if (items.length < 5) {
             return null;
         }
-        String x = items[1].split("=")[1];
-        int style = Integer.decode(x);
+        int style = Integer.decode(items[1].split("=")[1]);
         String r1Str = items[2].split("=")[1];
         int r1 = Integer.decode(r1Str.substring(0, r1Str.length() - 1));
         return new ObsZone(style, r1);
