@@ -17,6 +17,9 @@ import static java.lang.System.exit;
  */
 public class CupToOgnTask {
 
+    private static final String COMPARE_DUPLICATE_POSITION = "compare";
+    private static final String CUP = "cup";
+    private static final String OGN = "ogn";
     private static DecimalFormat dfLat = new DecimalFormat("##.00000");
     private static DecimalFormat dfLon = new DecimalFormat("###.00000");
 
@@ -30,12 +33,15 @@ public class CupToOgnTask {
         Options options = new Options();
         options.addRequiredOption("cup", "seeyou .cup input file",true, "the cup-file to read");
         options.addOption("ogn", true, "the ogn-file to write, if not specified: sysout");
+        options.addOption(COMPARE_DUPLICATE_POSITION,false, "check if there are waypoins with the same position");
+        CommandLine cmd = null;
+
         HelpFormatter formatter = new HelpFormatter();
         formatter.setWidth(200);
         try {
-            CommandLine cmd = parser.parse(options, args);
-            cupfile = cmd.getOptionValue("cup");
-            ognfile = cmd.getOptionValue("ogn");
+            cmd = parser.parse(options, args);
+            cupfile = cmd.getOptionValue(CUP);
+            ognfile = cmd.getOptionValue(OGN);
         } catch (ParseException e) {
             formatter.printHelp("cupToOgnTask", options);
             exit(1);
@@ -89,6 +95,11 @@ public class CupToOgnTask {
                     break;
             }
             lineNumber++;
+        }
+
+        if (cmd.hasOption(COMPARE_DUPLICATE_POSITION)) {
+            WaypointUtils.checkForDuplicate(waipoints);
+            exit(0);
         }
 
         // to json
