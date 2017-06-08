@@ -27,7 +27,6 @@ public class WaypointUtils {
                     System.out.println("Duplicate: Name=" + entry1.getKey().replaceAll("\"","") + "/" + entry2.getKey().replaceAll("\"","")
                             + ", Lat/Lon=" + dfLat.format(entry1.getValue().getLat()) + "/" + dfLon.format(entry1.getValue().getLon()));
                     pWps.add(entry1.getValue());
-                    pWps.add(entry2.getValue());
                 }
 
             }
