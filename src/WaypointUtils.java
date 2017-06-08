@@ -24,7 +24,7 @@ public class WaypointUtils {
                 }
                 if (entry1.getValue().getLat() == entry2.getValue().getLat()
                         & entry1.getValue().getLon() == entry2.getValue().getLon()) {
-                    System.out.println("Duplicate: Name=" + entry1.getKey() + "/" + entry2.getKey()
+                    System.out.println("Duplicate: Name=" + entry1.getKey().replaceAll("\"","") + "/" + entry2.getKey().replaceAll("\"","")
                             + ", Lat/Lon=" + dfLat.format(entry1.getValue().getLat()) + "/" + dfLon.format(entry1.getValue().getLon()));
                     pWps.add(entry1.getValue());
                     pWps.add(entry2.getValue());
