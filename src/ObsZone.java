@@ -13,8 +13,9 @@ public class ObsZone {
             return null;
         }
         int style = Integer.decode(items[1].split("=")[1]);
-        String r1Str = items[2].split("=")[1];
-        int r1 = Integer.decode(r1Str.substring(0, r1Str.length() - 1));
+        // todo -- pick only 30000 from line "ObsZone=1,Style=1,SpeedStyle=3,R1=30000m,A1=180,Reduce=1,AAT=1"
+        String r1Str = items[3].split("=")[1];
+        int r1 = Integer.decode(r1Str.substring(0, r1Str.length()-1));
         return new ObsZone(style, r1);
     }
 

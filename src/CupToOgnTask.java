@@ -111,7 +111,7 @@ public class CupToOgnTask {
             int wpNum = 0;
             for (WaypointWithObsZone taskWaypoint : taskWaypoints) {
                 legs.put((new JSONArray()).put(dfLat.format(taskWaypoint.getLat())).put(dfLon.format(taskWaypoint.getLon())));
-                if (wpNum > 0 & wpNum < taskWaypoints.size() - 1) {
+                if (wpNum < taskWaypoints.size()) {
                     legs.put((new JSONArray()).put(taskWaypoint.getObsZone() == null ? 500 : taskWaypoint.getObsZone().getR1()));
                 }
                 wpNum++;

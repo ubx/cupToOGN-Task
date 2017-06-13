@@ -11,13 +11,15 @@ public class Task {
     public List<WaypointWithObsZone> waypoints = new ArrayList<WaypointWithObsZone>();
 
     static Task createTask(HashMap<String, Waypoint> waypoints, String... items) {
-        Task task = new Task(items[0].length() == 0 ? createTaskName(items) : items[0]);
+        Task task = new Task(items[0].length() == 0 ? createTaskName(items) : items[0].replaceAll("\"",""));
         for (int i = 1; i < items.length; i++) {
-            Waypoint waypoint = waypoints.get(items[i]);
-            if (waypoint == null) {
-                return null;
+            if (!items[i].equals("\"???\"")) {
+                Waypoint waypoint = waypoints.get(items[i]);
+                if (waypoint == null) {
+                    return null;
+                }
+                task.waypoints.add(new WaypointWithObsZone(waypoint));
             }
-            task.waypoints.add(new WaypointWithObsZone(waypoint));
         }
         return task;
     }
@@ -35,7 +37,9 @@ public class Task {
     }
 
     public void addObsZone(int num, ObsZone obsZone) {
-        waypoints.get(num + 1).setObsZone(obsZone);
+        if (num < waypoints.size()) {
+            waypoints.get(num).setObsZone(obsZone);
+        }
     }
 
     private static String createTaskName(String... items) {
