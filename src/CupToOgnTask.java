@@ -31,8 +31,8 @@ public class CupToOgnTask {
 
         CommandLineParser parser = new DefaultParser();
         Options options = new Options();
-        options.addRequiredOption("cup", "seeyou .cup input file",true, "the cup-file to read");
-        options.addOption("ogn", true, "the ogn-file to write, if not specified: sysout");
+        options.addRequiredOption("cup", "seeyou cup input file",true, "the cup-file to read");
+        options.addOption("ogn", true, "the ogn-file (json-encoded) to write, if not specified: sysout");
         options.addOption(COMPARE_DUPLICATE_POSITION,false, "check if there are waypoins with the same position");
         CommandLine cmd = null;
 
