@@ -20,8 +20,6 @@ public class CupToOgnTask {
     private static final String COMPARE_DUPLICATE_POSITION = "compare";
     private static final String CUP = "cup";
     private static final String OGN = "ogn";
-    private static DecimalFormat dfLat = new DecimalFormat("##.00000");
-    private static DecimalFormat dfLon = new DecimalFormat("###.00000");
 
     private enum Mode {waypointheader, waypoint, taskheader, task}
 
@@ -110,7 +108,7 @@ public class CupToOgnTask {
             JSONArray legs = new JSONArray();
             int wpNum = 0;
             for (WaypointWithObsZone taskWaypoint : taskWaypoints) {
-                legs.put((new JSONArray()).put(dfLat.format(taskWaypoint.getLat())).put(dfLon.format(taskWaypoint.getLon())));
+                legs.put((new JSONArray()).put(taskWaypoint.getLat()).put(taskWaypoint.getLon()));
                 if (wpNum < taskWaypoints.size()) {
                     legs.put((new JSONArray()).put(taskWaypoint.getObsZone() == null ? 500 : taskWaypoint.getObsZone().getR1()));
                 }

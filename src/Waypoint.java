@@ -4,15 +4,15 @@
 public class Waypoint {
 
     private String name;
-    private double lat, lon;
+    private float lat, lon;
 
 
     public static Waypoint createWaypoint(String... items) {
         if (items.length < 7) return null;
-        return new Waypoint(items[0], toDouble(items[3]), toDouble(items[4]));
+        return new Waypoint(items[0], toFloat(items[3]), toFloat(items[4]));
     }
 
-    public Waypoint(String name, double lat, double lon) {
+    public Waypoint(String name, float lat, float lon) {
         this.name = name;
         this.lat = lat;
         this.lon = lon;
@@ -22,21 +22,21 @@ public class Waypoint {
         return name;
     }
 
-    public double getLat() {
+    public float getLat() {
         return lat;
     }
 
-    public double getLon() {
+    public float getLon() {
         return lon;
     }
 
-    static private double toDouble(String val) {
+    static private float toFloat(String val) {
         int p = val.indexOf(".");
         String deg = val.substring(0, p - 2);
         String min = val.substring(p - 2, val.length() - 1);
-        double v = Double.valueOf(deg) + (Double.valueOf(min) / 60.0d);
+        float v = Float.valueOf(deg) + (Float.valueOf(min) / 60.0f);
         if ((val.charAt(val.length()-1) == 'W') | (val.charAt(val.length()-1) == 'S')) {
-            v = v * (-1.0d);
+            v = v * (-1.0f);
         }
         return v;
     }
