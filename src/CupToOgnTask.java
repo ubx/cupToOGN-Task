@@ -117,7 +117,7 @@ public class CupToOgnTask {
             JSONObject jsonObj2 = new JSONObject()
                             .put("legs", legs)
                             .put("name", taskName)
-                            .put("color", "CC3333");
+                            .put("color", Colors.getNextColor());
             jsonObj.append("tasks", jsonObj2);
         }
 
