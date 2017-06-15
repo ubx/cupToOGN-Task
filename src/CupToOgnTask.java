@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
+import static java.lang.System.console;
 import static java.lang.System.exit;
 
 
@@ -29,9 +30,9 @@ public class CupToOgnTask {
 
         CommandLineParser parser = new DefaultParser();
         Options options = new Options();
-        options.addRequiredOption("cup", "seeyou cup input file",true, "the cup-file to read");
+        options.addRequiredOption("cup", "seeyou cup input file", true, "the cup-file to read");
         options.addOption("ogn", true, "the ogn-file (json-encoded) to write, if not specified: sysout");
-        options.addOption(COMPARE_DUPLICATE_POSITION,false, "check if there are waypoins with the same position");
+        options.addOption(COMPARE_DUPLICATE_POSITION, false, "check if there are waypoins with the same position");
         CommandLine cmd = null;
 
         HelpFormatter formatter = new HelpFormatter();
@@ -55,6 +56,7 @@ public class CupToOgnTask {
         Task lastTask = null;
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
+            if (line.length() == 0) continue; // skip empty line
             if (line.contains("-----Related Tasks-----")) {
                 mode = Mode.taskheader;
             }
@@ -107,17 +109,36 @@ public class CupToOgnTask {
             List<WaypointWithObsZone> taskWaypoints = task.getWaypoints();
             JSONArray legs = new JSONArray();
             int wpNum = 0;
+            int starLine = 0;
+            int finishLine = 0;
             for (WaypointWithObsZone taskWaypoint : taskWaypoints) {
                 legs.put((new JSONArray()).put(taskWaypoint.getLat()).put(taskWaypoint.getLon()));
                 if (wpNum < taskWaypoints.size()) {
-                    legs.put((new JSONArray()).put(taskWaypoint.getObsZone() == null ? 500 : taskWaypoint.getObsZone().getR1()));
+                    if (taskWaypoint.getObsZone() == null) {
+                        legs.put((new JSONArray()).put(500));
+                    } else {
+                        final int r1 = taskWaypoint.getObsZone().getR1();
+                        if (wpNum == 0 & taskWaypoint.getObsZone().isStartLine()) {
+                            starLine = r1;
+                        } else if (wpNum == taskWaypoints.size() - 1 & taskWaypoint.getObsZone().isFinishLine()) {
+                            finishLine = r1;
+                        } else {
+                            legs.put((new JSONArray()).put(r1));
+                        }
+                    }
                 }
                 wpNum++;
             }
             JSONObject jsonObj2 = new JSONObject()
-                            .put("legs", legs)
-                            .put("name", taskName)
-                            .put("color", Colors.getNextColor());
+                    .put("legs", legs)
+                    .put("name", taskName)
+                    .put("color", Colors.getNextColor());
+            if (starLine > 0) {
+                jsonObj2.put("startline", starLine);
+            }
+            if (finishLine > 0) {
+                jsonObj2.put("finishline", finishLine);
+            }
             jsonObj.append("tasks", jsonObj2);
         }
 
