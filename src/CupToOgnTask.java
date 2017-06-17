@@ -119,9 +119,9 @@ public class CupToOgnTask {
                     } else {
                         final int r1 = taskWaypoint.getObsZone().getR1();
                         if (wpNum == 0 & taskWaypoint.getObsZone().isStartLine()) {
-                            starLine = r1;
+                            starLine = r1 * 2;
                         } else if (wpNum == taskWaypoints.size() - 1 & taskWaypoint.getObsZone().isFinishLine()) {
-                            finishLine = r1;
+                            finishLine = r1 * 2;
                         } else {
                             legs.put((new JSONArray()).put(r1));
                         }
