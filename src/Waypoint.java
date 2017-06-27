@@ -13,7 +13,7 @@ public class Waypoint {
     }
 
     public Waypoint(String name, float lat, float lon) {
-        this.name = name;
+        this.name = name.replaceAll("\"","");
         this.lat = lat;
         this.lon = lon;
     }

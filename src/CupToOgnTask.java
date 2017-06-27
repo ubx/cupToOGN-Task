@@ -90,7 +90,7 @@ public class CupToOgnTask {
                         lastTask.addObsZone(Integer.decode(obsItems[0].split("=")[1]), obsZone);
                         break;
                     }
-                    lastTask = Task.createTask(waipoints, line.split(","));
+                    lastTask = Task.createTask(waipoints, line.split("\",\""));
                     if (lastTask != null) tasks.add(lastTask);
                     break;
             }

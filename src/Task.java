@@ -13,8 +13,9 @@ public class Task {
     static Task createTask(HashMap<String, Waypoint> waypoints, String... items) {
         Task task = new Task(items[0].length() == 0 ? createTaskName(items) : items[0].replaceAll("\"",""));
         for (int i = 1; i < items.length; i++) {
-            if (!items[i].equals("\"???\"")) {
-                Waypoint waypoint = waypoints.get(items[i]);
+            String item = items[i].replaceAll("\"","");
+            if (!item.equals("???")) {
+                Waypoint waypoint = waypoints.get(item);
                 if (waypoint == null) {
                     return null;
                 }
